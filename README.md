@@ -1,3 +1,5 @@
+pages : https://moxhamusic.github.io/responsive-signup-page/signup.html
+
 # WanderPass — Tourist Sign Up / Sign In
 
 A responsive, front-end-only Sign Up and Sign In flow for a tourism site, styled as a
