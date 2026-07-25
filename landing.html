@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Explore — WanderPass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="landing">
+  <nav class="landing__nav">
+    <span class="brand">WanderPass</span>
+    <button id="logout-btn" type="button">Sign out</button>
+  </nav>
+
+  <section class="landing__hero">
+    <span class="eyebrow">Traveler Dashboard</span>
+    <h1>Welcome, <span id="welcome-name">Traveler</span> — where to next?</h1>
+    <p>You're signed in. Browse a few of this season's most-booked destinations below, hand-picked from your WanderPass profile.</p>
+  </section>
+
+  <div class="landing__grid">
+    <article class="dest-card">
+      <h3>Munnar Highlands</h3>
+      <p>Misty tea estates and cool hill-station air, best visited October through March.</p>
+    </article>
+    <article class="dest-card">
+      <h3>Alleppey Backwaters</h3>
+      <p>Houseboat cruises through palm-lined canals — a slow, scenic way to see Kerala.</p>
+    </article>
+    <article class="dest-card">
+      <h3>Fort Kochi</h3>
+      <p>Colonial streets, Chinese fishing nets, and a food scene worth the detour.</p>
+    </article>
+  </div>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

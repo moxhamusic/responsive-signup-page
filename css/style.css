@@ -1,0 +1,463 @@
+/* =========================================================
+   WANDERPASS — Auth pages for a tourism platform
+   Design language: passport cover x boarding-pass stub
+   ========================================================= */
+
+:root {
+  /* -- Color tokens -- */
+  --ink: #16262b;          /* deep ink navy — primary text */
+  --teal-deep: #0e2a2e;    /* passport cover teal — dark panel bg */
+  --teal-mid: #163c3f;     /* secondary dark surface */
+  --paper: #f5efdd;        /* passport page cream — card bg */
+  --paper-dim: #ece2c8;    /* recessed paper (inputs) */
+  --gold: #c99a3e;         /* foil / visa gold */
+  --gold-soft: #e7cf9a;
+  --stamp-red: #b23a2e;    /* ink-stamp red — accent + errors-adjacent but NOT error color */
+  --ok-green: #3f7d5c;     /* success green */
+  --error-red: #a3312a;    /* validation error */
+  --line: rgba(22, 38, 43, 0.14);
+  --line-on-dark: rgba(245, 239, 221, 0.22);
+
+  /* -- Type -- */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+
+  /* -- Scale (relative units) -- */
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.6rem;
+  --step-3: 2.2rem;
+  --step-4: 3rem;
+  --radius: 0.35rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 100%; } /* 16px baseline, all sizing below is rem/em */
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--teal-deep);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  margin: 0 0 0.5em;
+  line-height: 1.1;
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 0.15rem solid var(--gold);
+  outline-offset: 0.15rem;
+}
+
+/* =========================================================
+   Background texture — faint compass / lat-long lines
+   ========================================================= */
+.voyage-bg {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gutter);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(201, 154, 62, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(201, 154, 62, 0.06), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(245,239,221,0.03) 0 1px, transparent 1px 90px),
+    repeating-linear-gradient(90deg, rgba(245,239,221,0.03) 0 1px, transparent 1px 90px);
+}
+
+/* =========================================================
+   Ticket card — split boarding-pass layout
+   ========================================================= */
+.ticket {
+  width: 100%;
+  max-width: 62rem;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: 0 1.5rem 3.5rem rgba(0,0,0,0.35);
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (min-width: 769px) {
+  .ticket { grid-template-columns: 0.85fr 1.15fr; }
+}
+
+/* --- Left stub: dark cover panel with stamp signature --- */
+.ticket__stub {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(201,154,62,0.16), transparent 55%),
+    linear-gradient(160deg, var(--teal-deep), var(--teal-mid));
+  color: var(--paper);
+  padding: var(--step-3) var(--step-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.ticket__mark {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.ticket__mark::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--gold);
+  display: inline-block;
+}
+
+.ticket__title {
+  font-size: clamp(1.8rem, 3vw + 1rem, 2.6rem);
+  color: var(--paper);
+  margin-top: var(--step-2);
+}
+
+.ticket__lede {
+  font-size: 0.95rem;
+  color: var(--gold-soft);
+  max-width: 26ch;
+}
+
+/* The stamp: a rotated circular "visa" mark, the page's signature element */
+.stamp {
+  align-self: flex-start;
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+  border: 0.12rem solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-14deg);
+  position: relative;
+  margin-top: var(--step-3);
+}
+.stamp::before {
+  content: "";
+  position: absolute;
+  inset: 0.35rem;
+  border: 0.05rem dashed var(--gold-soft);
+  border-radius: 50%;
+}
+.stamp span {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--gold-soft);
+  line-height: 1.5;
+}
+
+.ticket__footer-note {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--line-on-dark);
+  letter-spacing: 0.06em;
+}
+
+/* --- Perforated divider between stub and form (desktop) --- */
+@media (min-width: 769px) {
+  .ticket__stub {
+    border-right: 0.09rem dashed rgba(245,239,221,0.35);
+  }
+  .ticket__stub::after {
+    content: "";
+    position: absolute;
+    right: -0.55rem;
+    top: 0; bottom: 0;
+    width: 1.1rem;
+    background-image: radial-gradient(circle, var(--teal-deep) 0.32rem, transparent 0.33rem);
+    background-size: 1.1rem 1.4rem;
+    background-repeat: repeat-y;
+  }
+}
+
+/* --- Right panel: the actual form --- */
+.ticket__form-panel {
+  padding: var(--step-3) var(--step-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--step-1);
+}
+
+.panel-head { margin-bottom: 0.25em; }
+.panel-head h2 { font-size: var(--step-3); }
+.panel-head p {
+  margin: 0;
+  color: rgba(22,38,43,0.65);
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   Form elements
+   ========================================================= */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(22,38,43,0.7);
+}
+
+.field .input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field input {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.85em 1em;
+  border-radius: var(--radius);
+  border: 0.09rem solid var(--line);
+  background: var(--paper-dim);
+  color: var(--ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.field input::placeholder { color: rgba(22,38,43,0.35); }
+
+.field input:focus {
+  border-color: var(--teal-mid);
+  background: #fffdf6;
+  outline: none;
+}
+
+/* Validation states — color + icon-free inline text for a11y */
+.field.is-valid input {
+  border-color: var(--ok-green);
+  background: #f2f8f4;
+}
+.field.is-invalid input {
+  border-color: var(--error-red);
+  background: #fbf1ef;
+}
+
+.field .hint {
+  min-height: 1.1em;
+  font-size: 0.78rem;
+  color: rgba(22,38,43,0.5);
+}
+.field.is-invalid .hint {
+  color: var(--error-red);
+  font-weight: 600;
+}
+.field.is-valid .hint {
+  color: var(--ok-green);
+}
+
+/* Password toggle */
+.pw-toggle {
+  position: absolute;
+  right: 0.6em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal-mid);
+  padding: 0.4em 0.6em;
+  border-radius: 0.25rem;
+}
+.pw-toggle:hover { background: rgba(22,38,43,0.06); }
+
+/* Submit button */
+.btn-primary {
+  margin-top: 0.25rem;
+  font: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  background: linear-gradient(160deg, var(--stamp-red), #8f2c22);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.95em 1.2em;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 0.5rem 1.2rem rgba(178,58,46,0.28);
+}
+.btn-primary:hover { transform: translateY(-0.08rem); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-banner {
+  border-radius: var(--radius);
+  padding: 0.8em 1em;
+  font-size: 0.88rem;
+  display: none;
+}
+.form-banner.show { display: block; }
+.form-banner.error {
+  background: #fbf1ef;
+  color: var(--error-red);
+  border: 0.06rem solid var(--error-red);
+}
+.form-banner.success {
+  background: #f2f8f4;
+  color: var(--ok-green);
+  border: 0.06rem solid var(--ok-green);
+}
+
+.switch-line {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(22,38,43,0.65);
+  margin-top: 0.25rem;
+}
+.switch-line a {
+  color: var(--stamp-red);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 0.09rem solid transparent;
+}
+.switch-line a:hover { border-color: var(--stamp-red); }
+
+/* Two-up grid for Name/Email etc on tablet+ */
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--step-0);
+}
+@media (min-width: 481px) {
+  .field-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+}
+
+/* =========================================================
+   Landing page (post-auth)
+   ========================================================= */
+.landing {
+  min-height: 100vh;
+  background: var(--teal-deep);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+.landing__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--step-1) var(--gutter);
+  border-bottom: 0.06rem solid var(--line-on-dark);
+}
+.landing__nav .brand {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+}
+.landing__nav button {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--gold-soft);
+  border: 0.09rem solid var(--line-on-dark);
+  border-radius: var(--radius);
+  padding: 0.6em 1em;
+  cursor: pointer;
+}
+.landing__nav button:hover { border-color: var(--gold); color: var(--gold); }
+
+.landing__hero {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: var(--step-4) var(--gutter);
+}
+.landing__hero .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+.landing__hero h1 {
+  font-size: clamp(2.2rem, 5vw + 1rem, 4rem);
+  max-width: 20ch;
+  margin: 0.4em auto 0.3em;
+}
+.landing__hero p {
+  max-width: 46ch;
+  margin: 0 auto;
+  color: rgba(245,239,221,0.75);
+  font-size: 1.05rem;
+}
+.landing__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--step-1);
+  max-width: 68rem;
+  margin: var(--step-3) auto 0;
+  padding: 0 var(--gutter) var(--step-4);
+}
+@media (min-width: 769px) {
+  .landing__grid { grid-template-columns: repeat(3, 1fr); }
+}
+.dest-card {
+  background: var(--teal-mid);
+  border: 0.06rem solid var(--line-on-dark);
+  border-radius: var(--radius);
+  padding: var(--step-1);
+}
+.dest-card h3 { font-size: 1.15rem; margin-bottom: 0.3em; }
+.dest-card p { margin: 0; color: rgba(245,239,221,0.7); font-size: 0.92rem; }
+
+/* =========================================================
+   Responsive breakpoints (mobile ≤768, tablet 769–1024, desktop >1024)
+   ========================================================= */
+@media (max-width: 768px) {
+  .ticket__stub { padding: var(--step-2) var(--step-1); }
+  .ticket__form-panel { padding: var(--step-2) var(--step-1); }
+  .stamp { width: 5.2rem; height: 5.2rem; margin-top: var(--step-1); }
+  .ticket__title { font-size: 1.7rem; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .ticket { max-width: 48rem; }
+}
+
+@media (min-width: 1025px) {
+  .ticket { max-width: 66rem; }
+  .ticket__stub { padding: var(--step-4) var(--step-3); }
+  .ticket__form-panel { padding: var(--step-4) var(--step-3); }
+}

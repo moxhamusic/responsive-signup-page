@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign In — WanderPass</title>
+<meta name="description" content="Sign in to your WanderPass traveler account." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<main class="voyage-bg">
+  <section class="ticket">
+    <div class="ticket__stub">
+      <div>
+        <span class="ticket__mark">WanderPass · Traveler ID</span>
+        <h1 class="ticket__title">Welcome back, traveler.</h1>
+        <p class="ticket__lede">Sign in to pick up your itinerary right where you left off.</p>
+      </div>
+      <div class="stamp" aria-hidden="true">
+        <span>Re-Entry<br />Approved<br />★ 2026 ★</span>
+      </div>
+      <p class="ticket__footer-note">FORM 02 / SIGN&nbsp;IN</p>
+    </div>
+
+    <div class="ticket__form-panel">
+      <div class="panel-head">
+        <h2>Sign in</h2>
+        <p>Use the email and password from your WanderPass sign up.</p>
+      </div>
+
+      <div id="signin-banner" class="form-banner" role="alert"></div>
+
+      <form id="signin-form" novalidate>
+        <div class="field" id="email-field">
+          <label for="email">Email</label>
+          <div class="input-wrap">
+            <input type="email" id="email" name="email" placeholder="you@mail.com" autocomplete="email" />
+          </div>
+          <div class="hint" id="email-hint"></div>
+        </div>
+
+        <div class="field" id="password-field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" />
+            <button type="button" class="pw-toggle" data-target="password" aria-pressed="false">Show</button>
+          </div>
+          <div class="hint" id="password-hint"></div>
+        </div>
+
+        <button type="submit" class="btn-primary">Sign in</button>
+        <p class="switch-line">New to WanderPass? <a href="signup.html">Create an account</a></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script src="js/validators.js"></script>
+<script src="js/store.js"></script>
+<script src="js/signin.js"></script>
+</body>
+</html>
